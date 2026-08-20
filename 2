@@ -1,0 +1,9 @@
+from dataclasses import dataclass
+
+@dataclass
+class UserProfile:
+    user_id: int
+    name: str | None
+    birth_date: str   # ДД.ММ.ГГГГ
+    birth_time: str   # ЧЧ:ММ
+    birth_city: str
