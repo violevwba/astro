@@ -1,0 +1,44 @@
+import requests
+from config import AI_API_KEY, BASE_ASTRO_PROMPT
+
+OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
+MODEL_NAME = "gpt-4o-mini"  # или другой, который ты используешь
+
+def build_astro_prompt(birth_date: str, birth_time: str, birth_city: str) -> str:
+    return (
+        BASE_ASTRO_PROMPT
+        + "\n\nИсходные данные пользователя:\n"
+        + f"Дата рождения: {birth_date}\n"
+        + f"Время рождения: {birth_time}\n"
+        + f"Город рождения: {birth_city}\n\n"
+        + "Построй натальную карту, матрицу судьбы, соляр на текущий год, "
+          "основные транзиты и лунар.\n"
+        + "Опиши:\n"
+        + "- общую картину личности и жизненного пути;\n"
+        + "- сильные и слабые стороны;\n"
+        + "- любовь и отношения;\n"
+        + "- деньги, работа, предназначение;\n"
+        + "- здоровье и ресурсы;\n"
+        + "- рекомендации на год вперёд.\n"
+        + "Структурируй текст по блокам с подзаголовками."
+    )
+
+def generate_full_report(birth_date: str, birth_time: str, birth_city: str) -> str:
+    user_prompt = build_astro_prompt(birth_date, birth_time, birth_city)
+
+    headers = {
+        "Authorization": f"Bearer {AI_API_KEY}",
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "model": MODEL_NAME,
+        "messages": [
+            {"role": "system", "content": BASE_ASTRO_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ],
+    }
+
+    resp = requests.post(OPENAI_API_URL, json=payload, headers=headers, timeout=60)
+    resp.raise_for_status()
+    data = resp.json()
+    return data["choices"][0]["message"]["content"]
