@@ -1,0 +1,4 @@
+python-telegram-bot>=22.0,<23
+openai>=1.100.0
+playwright>=1.50.0
+httpx>=0.28.0

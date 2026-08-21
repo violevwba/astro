@@ -1,0 +1,4 @@
+TELEGRAM_BOT_TOKEN=сюда_токен_от_BotFather
+OPENAI_API_KEY=сюда_ключ_OpenAI
+OPENAI_MODEL=gpt-5-mini
+GEOCULT_URL=https://geocult.ru/natalnaya-karta-onlayn-raschet
